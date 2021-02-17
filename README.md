@@ -11,7 +11,7 @@ Program to browse FTP servers with additional functionality.
 
 ## Introduction
 
-File transfer protocol is a network protocol allowing a client to transfer files from a server via a network. 
+File transfer protocol is a network protocol allowing a client to transfer files to and from a server via a network. 
 
 This program establishes a connection to an FTP server, specified by the user, and allows navigation and downloading of files within the server.
 
