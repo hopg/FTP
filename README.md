@@ -44,26 +44,27 @@ The user can do either one of the following to enter directories:
 - Enter in the number corresponding to the directory
 - Utilise the `cd` command to navigate through various directory levels
 
-If the user is to accidentally select a file to navigate into, the program will notify the user and ask the user to specify a different directory.
+If the user is to accidentally select a file to navigate into, the program will notify the user and ask the user to specify a choice again.
 
 #### Download File
 
-This option will ask the user which file they would like to download within the current directory. The file will be downloaded to the current local directory, that is, where the program is being ran. 
+This option will ask the user which file they would like to download within the current directory. The file will be downloaded to the current local directory, that is, where the program was executed. 
 
 The user can either enter in the name of the file they would like to download or they can enter in the associated number to the file. In the scenario where a folder is selected instead of a file, the program will notify the user and prompt the user to select again.
 
-If the file of interest is within a different directory, please use the `Change Directory` option first before selection this option.
+If the file of interest is within a different directory, please use the `Change Directory` option first before selecting this option.
 
 #### Change FTP Server
 
-This options allows the user to close the connection to the current FTP server and specify a different FTP server to connect to. 
+This option allows the user to close the connection to the current FTP server and specify a different FTP server to connect to. 
 
 ### Features
 - Options presented in two columns with enumeration
 - Program accepts either name of the option or corresponding number as acceptable inputs
 - Ability to use `cd` command within `Change Directory` menu option. 
 - Within `Change Directory` error handling for selecting a file instead of a directory
-- Download progress for files 
+- Download size presented to user before confirming download
+- Download progress for files as a percentage
 - Within `Download` error handling for selecting a directory instead of a file
 - `user_message` function which prints out error messages to the user
 - `q` to quit from menu options
