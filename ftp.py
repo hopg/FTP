@@ -229,10 +229,10 @@ def ftp_download_menu(ftp):
 
 message = ""
 menu_choice = ["Change Directory", "Download File", "Change FTP Server"]
-# connect()
-# Debug server below
-ftp = ftputil.FTPHost('ftp.nluug.nl', 'anonymous', 'pass')
-server = "ftp.nluug.nl"
+connect()
+# Debug server below, comment out connect() and uncomment the following to login to server below. 
+# ftp = ftputil.FTPHost('ftp.nluug.nl', 'anonymous', 'pass')
+# server = "ftp.nluug.nl"
 while True:
     clear_output()
     user_message()
