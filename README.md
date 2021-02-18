@@ -76,6 +76,7 @@ This option allows the user to close the connection to the current FTP server an
 - `IPthon.display`
 
 ### Known Issues
-- Unable to quit when entering the details of the FTP server, can lead to be stuck in a loop if valid FTP server details are not entered
+- ~~Unable to quit when entering the details of the FTP server, can lead to be stuck in a loop if valid FTP server details are not entered~~
 - An error is thrown if connection to the server has a timeout after a period of inactivity with the server
 - As of current, can only download to the current working directory
+- If a download size is very small, the program will show the size as being 0.0mb
