@@ -1,31 +1,50 @@
 import ftputil, os, getpass
 from IPython.display import clear_output
 
+def user_message():
+    """
+    Prints out error messages to the user.
+    """
+    global message
+    if len(message) != 0:
+        print(message)
+        message = ""
+
 def connect():
     """
     Attempts to establish a connection with the details specified by the user.
     """
     global ftp
     global message
-    global server
+    global connection
     while True:
         clear_output()
         user_message()
+        print("Connect to an FTP Server\nEnter 'q' to quit.")
         server = input("Please enter the address of the FTP server you'd like to connect to: ")
+        if server.lower() == "q":
+            break
+            
         print("Note: You can leave the following two inputs blank to login as 'anonymous'.")
         user = input("Please enter in the user name: ")
-        password = getpass.getpass("Please enter in the password of the FTP server: ")
-
-        if user.strip() == "":
+        if user.lower() == "q":
+            break
+        elif user.strip() == "":
             user = "anonymous"
-        if password.strip() == "":
+            
+        password = getpass.getpass("Please enter in the password of the FTP server: ")
+        if password.lower() == "q":
+            break
+        elif password.strip() == "":
             password = "pass"
+            
         try:
             ftp = ftputil.FTPHost(server, user, password)
         except:
-            message = "Please ensure that you've entered in your details correctly"
+            message = "Please ensure that your details are correct."
         else:
-            message = f"Connection to {server} was successful!"
+            message = f"Connection to {server} was successful!\n"
+            connection = server
             break
 
 def user_choice(inpt, directory):
@@ -48,15 +67,6 @@ def user_choice(inpt, directory):
             return direct_dict[inpt]
         else:
             message = "Please ensure that you have selected a number corresponding to the item."
-
-def user_message():
-    """
-    Prints out error messages to the user.
-    """
-    global message
-    if len(message) != 0:
-        print(message)
-        message = ""
 
 def enumerate_list(item):
     """
@@ -117,8 +127,9 @@ def change_directory(ftp):
     while True:
         clear_output()
         user_message()
+        print("Change Directory")
         print("Type in the name of the directory, enter in the item number, or use 'cd <directory-path>' to change directory.")
-        print(f"You are currently in {ftp.getcwd()}")
+        print(f"Enter 'q' to quit.\n\nYou are currently in {ftp.getcwd()}\n")
 
         enumerate_list(ftp.listdir(ftp.curdir))
         directory_list = (ftp.listdir(ftp.curdir))
@@ -188,8 +199,8 @@ def ftp_download(ftp, file_name):
 
                 else:
                     if len(dl) == 0 or dl[0] == 'y':
-                        break       # This is here because otherwise we can't break out of outer
-                                     # loop
+                        break  
+            
                     else:
                         message = "Quitting download..."
                         download = False
@@ -210,12 +221,13 @@ def ftp_download_menu(ftp):
     while download:
         clear_output()
         user_message()
+        print("File Download\nEnter 'q' to quit.\n")
         enumerate_list(ftp.listdir(ftp.getcwd()))
         file_name = input("\nWhat file would you like to download?: ")
 
         if file_name == 'q':
             download = False
-            message = "Quitting download..."
+            message = "Quitting download...\n"
             break
 
         else:
@@ -228,31 +240,35 @@ def ftp_download_menu(ftp):
                     message = "Please ensure you have spelt the file name correctly."
 
 message = ""
+connection = ""
 menu_choice = ["Change Directory", "Download File", "Change FTP Server"]
 connect()
-# Debug server below, comment out connect() and uncomment the following to login to server below. 
+# Debug server below, comment out connect() and uncomment following lines
 # ftp = ftputil.FTPHost('ftp.nluug.nl', 'anonymous', 'pass')
-# server = "ftp.nluug.nl"
-while True:
-    clear_output()
-    user_message()
-    print(f"Connected to {server}\nYou are currently in {ftp.getcwd()}")
-    enumerate_list(menu_choice)
-    print("\n\nEnter 'q' to quit from any menu.")
-    menu = input("\nWhat would you like to do?: ").lower()
-
-    if menu in ("1", "change directory"):
-        change_directory(ftp)
-    elif menu in ("2", "download file"):
-        download = True
-        while download:
-            ftp_download_menu(ftp)
-    elif menu in ("3", "change ftp server"):
+# connection = DEBUG
+if len(connection) > 0:
+    while True:
         clear_output()
-        connect()
-    elif menu == "q":
-        print("Closing the connection...")
-        ftp.close()
-        break
-    else:
-        message = "Please double check that you've selected something from the menu!"
+        user_message()
+        print(f"Connected to {connection}\nYou are currently in {ftp.getcwd()}\n")
+        enumerate_list(menu_choice)
+        print("\n\nEnter 'q' to quit from any menu.")
+        menu = input("\nWhat would you like to do?: ").lower()
+
+        if menu in ("1", "change directory"):
+            change_directory(ftp)
+        elif menu in ("2", "download file"):
+            download = True
+            while download:
+                ftp_download_menu(ftp)
+        elif menu in ("3", "change ftp server"):
+            clear_output()
+            connect()
+        elif menu == "q":
+            print("Closing the connection...")
+            ftp.close()
+            break
+        else:
+            message = "Please double check that you've selected something from the menu!"
+else:
+    print("Quitting program...")
